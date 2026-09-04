@@ -1,0 +1,162 @@
+/* ── Services — Zig-Zag Alternating List / Textured Paper Card ───────────── */
+
+.svc {
+  background-color: var(--s-kraft-deep);
+  border-block-start: var(--rule-hair) solid var(--ink-rule);
+}
+
+.svc__head { max-width: 62ch; }
+.svc__h2 { max-width: 18ch; }
+.svc__lede { max-width: 46ch; }
+
+.svc__list {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  margin-block-start: clamp(2.5rem, 4.4vw, 4rem);
+}
+
+.svc__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: center;
+}
+
+/* The photo bleeds under the paper card so the two halves interlock. */
+.svc__photo {
+  grid-row: 1;
+  grid-column: 1 / span 7;
+  aspect-ratio: 16 / 10;
+  border: 0;
+  box-shadow: var(--e-card);
+  opacity: 0;
+  transform: scale(1.03);
+  filter: blur(4px);
+  transition:
+    opacity var(--reveal-dur-slow) var(--ease-out-cubic),
+    transform var(--reveal-dur-slow) var(--ease-out-cubic),
+    filter var(--reveal-dur-slow) var(--ease-out-cubic);
+}
+.svc__row[data-in='true'] .svc__photo { opacity: 1; transform: none; filter: none; }
+.svc__photo .fdraw__img {
+  transition: transform 900ms var(--ease-out-quart);
+}
+.svc__row:hover .svc__photo .fdraw__img { transform: scale(1.045); }
+
+.svc__card {
+  position: relative;
+  z-index: 2;
+  grid-row: 1;
+  grid-column: 6 / span 7;
+  padding: clamp(1.5rem, 2.8vw, 2.5rem);
+  background: var(--s-form);
+  border: var(--rule-hair) solid var(--ink-rule);
+  box-shadow: var(--e-ticket);
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity var(--reveal-dur) var(--ease-out-cubic) 200ms,
+    transform var(--reveal-dur) var(--ease-out-cubic) 200ms,
+    box-shadow var(--hover-dur) var(--ease-out-cubic);
+}
+.svc__row:hover .svc__card { box-shadow: var(--e-lift); }
+.svc__row[data-in='true'] .svc__card { opacity: 1; transform: none; }
+
+.svc__row[data-flip='true'] .svc__photo { grid-column: 6 / span 7; }
+.svc__row[data-flip='true'] .svc__card { grid-column: 1 / span 7; }
+
+.svc__cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding-block-end: var(--sp-3);
+  border-block-end: var(--rule-hair) solid var(--ink-rule-soft);
+}
+.svc__ref { color: var(--c-primary); }
+/* The punched filing hole of a work order. */
+.svc__punch {
+  width: 13px;
+  height: 13px;
+  border-radius: var(--r-pill);
+  background: var(--s-kraft-deep);
+  box-shadow: var(--e-punch);
+}
+
+.svc__title {
+  margin-block-start: var(--sp-4);
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: var(--fs-2xl);
+  line-height: 1.2;
+  letter-spacing: var(--tr-tight);
+  color: var(--ink-heading);
+}
+.svc__text {
+  margin-block-start: var(--sp-3);
+  font-size: var(--fs-md);
+  line-height: var(--lh-loose);
+  color: var(--ink-muted);
+  max-width: 44ch;
+}
+
+.svc__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-block-start: var(--sp-5);
+  padding-block-end: 5px;
+  font-size: var(--fs-micro);
+  font-weight: var(--w-body-black);
+  letter-spacing: var(--tr-caps);
+  text-transform: uppercase;
+  color: var(--c-primary);
+  border-block-end: var(--rule-thin) solid var(--wash-maroon-28);
+  transition: color var(--dur-fast) linear, border-color var(--dur-fast) linear;
+}
+.svc__cta .lucide { --icon: 15px; }
+.svc__ctaArrow { transition: transform var(--hover-dur) var(--ease-out-quart); }
+.svc__cta:hover { color: var(--c-accent); border-block-end-color: var(--c-accent); }
+.svc__cta:hover .svc__ctaArrow { transform: translate3d(3px, -3px, 0); }
+
+/* ── Foot ───────────────────────────────────────────────────────────────── */
+.svc__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  margin-block-start: clamp(2.5rem, 4vw, 3.5rem);
+  padding-block-start: var(--sp-6);
+  border-block-start: var(--rule-hair) solid var(--ink-rule);
+}
+.svc__footText {
+  font-family: var(--font-display);
+  font-weight: var(--w-display-reg);
+  font-size: var(--fs-xl);
+  line-height: 1.35;
+  color: var(--ink-heading);
+  max-width: 34ch;
+}
+
+@media (max-width: 900px) {
+  .svc__row { grid-template-columns: minmax(0, 1fr); }
+  .svc__photo,
+  .svc__row[data-flip='true'] .svc__photo { grid-column: 1; grid-row: 1; aspect-ratio: 16 / 9; }
+  .svc__card,
+  .svc__row[data-flip='true'] .svc__card {
+    grid-column: 1;
+    grid-row: 2;
+    margin-block-start: -2.25rem;
+    margin-inline: var(--sp-4) 0;
+  }
+  .svc__text { max-width: none; }
+}
+
+@media (max-width: 480px) {
+  .svc__card, .svc__row[data-flip='true'] .svc__card { margin-inline: var(--sp-3) 0; margin-block-start: -1.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svc__photo, .svc__card { opacity: 1; transform: none; filter: none; }
+}

@@ -1,0 +1,91 @@
+/* ── Final CTA — Full-Width CTA Banner / Textured Warm CTA Background ────── */
+
+.cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--s-maroon-deep);
+  color: var(--ink-on-dark);
+  padding-block: clamp(3.5rem, 6vw, 6rem);
+}
+
+.cta__bed {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  contain: size layout paint;
+}
+.cta__bed img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.5;
+}
+/* Banner Background Slow Pan — idle, low amplitude, felt not seen. */
+@keyframes cta-pan {
+  0%   { transform: scale(1.08) translate3d(-1.4%, 0, 0); }
+  50%  { transform: scale(1.08) translate3d(1.4%, -1%, 0); }
+  100% { transform: scale(1.08) translate3d(-1.4%, 0, 0); }
+}
+.cta__bed img { animation: cta-pan 26s ease-in-out infinite; }
+
+.cta__wash {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim-cta);
+  mix-blend-mode: multiply;
+}
+.cta__grain {
+  position: absolute;
+  inset: 0;
+  background-image: var(--tex-grain);
+  opacity: 0.13;
+  mix-blend-mode: overlay;
+}
+
+.cta__inner { position: relative; z-index: 1; }
+.cta__block { max-width: 54rem; }
+
+.cta__eyebrow { color: var(--g-star); }
+.cta__title {
+  margin-block-start: var(--sp-4);
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: var(--fs-3xl);
+  line-height: 1.16;
+  letter-spacing: var(--tr-tighter);
+  color: var(--ink-on-dark);
+  text-wrap: balance;
+}
+.cta__sub {
+  margin-block-start: var(--sp-4);
+  font-size: var(--fs-lg);
+  line-height: 1.62;
+  color: var(--ink-on-dark-muted);
+  max-width: 50ch;
+}
+
+.cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-block-start: clamp(1.5rem, 2.6vw, 2.25rem);
+}
+.cta__call {
+  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+  transition:
+    transform 220ms var(--ease-out-cubic),
+    background-color var(--hover-dur) var(--ease-out-cubic),
+    border-color var(--hover-dur) var(--ease-out-cubic);
+}
+.cta__call:hover { transform: translate3d(var(--mx, 0px), calc(var(--my, 0px) - 2px), 0); }
+
+.cta__reassure { margin-block-start: var(--sp-5); max-width: 42rem; }
+
+.cta :focus-visible { outline-color: var(--focus-ring-dark); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cta__bed img { animation: none; transform: scale(1.02); }
+  .cta__call, .cta__call:hover { transform: none; }
+}

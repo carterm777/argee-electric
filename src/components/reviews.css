@@ -1,0 +1,251 @@
+/* ── Google Reviews — Single Featured Pull-Quote + compact secondary row ───
+   Visual style: Oversized Quote Mark Typography.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.rev {
+  background-color: var(--s-kraft-pale);
+  border-block: var(--rule-hair) solid var(--ink-rule-soft);
+}
+
+.rev__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 320px);
+  align-items: end;
+  gap: clamp(1.5rem, 3vw, 3.5rem);
+}
+.rev__title { max-width: 22ch; }
+
+/* ── Aggregate callout ──────────────────────────────────────────────────── */
+.rev__aggCard {
+  position: relative;
+  padding: var(--sp-5);
+  background: var(--s-form-pure);
+  border: var(--rule-hair) solid var(--ink-rule);
+  box-shadow: var(--e-card);
+}
+.rev__aggCard::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: var(--rule-thick);
+  background: linear-gradient(
+    to right,
+    var(--g-blue) 0 25%, var(--g-red) 25% 50%, var(--g-yellow) 50% 75%, var(--g-green) 75% 100%
+  );
+}
+.rev__aggHead {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding-block-end: var(--sp-3);
+  border-block-end: var(--rule-hair) solid var(--ink-rule-soft);
+}
+.rev__g { width: 20px; height: 20px; flex: none; }
+.rev__gSmall { width: 15px; height: 15px; flex: none; opacity: 0.85; }
+
+.rev__score {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin-block-start: var(--sp-3);
+}
+.rev__scoreNum {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: 3.25rem;
+  line-height: 0.9;
+  letter-spacing: var(--tr-tighter);
+  color: var(--ink-heading);
+  font-variant-numeric: tabular-nums;
+}
+.rev__scoreOf {
+  font-size: var(--fs-base);
+  font-weight: var(--w-body-bold);
+  color: var(--ink-faint);
+}
+.rev__aggLine {
+  margin-block-start: var(--sp-3);
+  font-size: var(--fs-caption);
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+
+/* ── Stars — fill sweep on entry ────────────────────────────────────────── */
+.rev__stars { display: inline-flex; gap: 3px; margin-block-start: var(--sp-3); }
+.rev__star {
+  --icon: 15px;
+  color: var(--g-star);
+  fill: currentColor;
+  stroke-width: 0;
+  opacity: 0;
+  transform: scale(0.7);
+  transition:
+    opacity 260ms var(--ease-out-cubic) calc(var(--i, 0) * 70ms),
+    transform 320ms var(--ease-out-quart) calc(var(--i, 0) * 70ms);
+}
+.rev__stars[data-sweep='true'] .rev__star { opacity: 1; transform: none; }
+.rev__stars--lg .rev__star { --icon: 21px; }
+
+/* ── Featured pull-quote ────────────────────────────────────────────────── */
+/* The featured review is a printed slip, not a white box: it gets the page’s
+   carbon-copy device so it belongs to the same stationery as the job ticket. */
+.rev__featured { position: relative; margin-block-start: clamp(2rem, 3.6vw, 3.25rem); }
+.rev__carbon {
+  position: absolute;
+  inset: 0;
+  contain: size layout paint;
+  z-index: 0;
+  background: var(--s-carbon);
+  border: var(--rule-hair) solid var(--ink-rule);
+  box-shadow: var(--e-sheet);
+  transform: translate3d(14px, 16px, 0) rotate(0.5deg);
+  transform-origin: 20% 0;
+  transition: transform var(--hover-dur) var(--ease-out-cubic);
+}
+.rev__featured:hover .rev__carbon { transform: translate3d(19px, 21px, 0) rotate(0.8deg); }
+.rev__quote {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  transition: transform var(--hover-dur) var(--ease-out-cubic);
+  padding: clamp(2rem, 3.6vw, 3.25rem) clamp(1.5rem, 3vw, 3.25rem);
+  background: var(--s-form-pure);
+}
+.rev__mark {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  top: -0.3em;
+  left: 0.01em;
+  z-index: 0;
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: var(--fs-quotemark);
+  line-height: 1;
+  color: var(--c-primary);
+  opacity: 0.1;
+  pointer-events: none;
+  user-select: none;
+}
+.rev__quoteText {
+  position: relative;
+  z-index: 1;
+  max-width: 26ch;
+  font-family: var(--font-display);
+  font-weight: var(--w-display-reg);
+  font-size: var(--fs-4xl);
+  line-height: 1.28;
+  letter-spacing: var(--tr-tight);
+  color: var(--ink-heading);
+  text-wrap: pretty;
+}
+.rev__quoteFoot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin-block-start: clamp(1.5rem, 2.6vw, 2.25rem);
+  padding-block-start: var(--sp-4);
+  border-block-start: var(--rule-hair) solid var(--ink-rule-soft);
+}
+.rev__quoteFoot .rev__stars { margin-block-start: 0; margin-inline-start: auto; }
+.rev__featured:hover .rev__quote { transform: translate3d(0, -3px, 0); }
+
+.rev__avatar {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex: none;
+  background: var(--c-secondary);
+  color: var(--s-form-pure);
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: 1.125rem;
+  border-radius: var(--r-pill);
+}
+.rev__avatar--sm { width: 34px; height: 34px; font-size: 0.875rem; background: var(--c-primary); }
+.rev__who { display: grid; gap: 2px; }
+.rev__who b {
+  font-size: var(--fs-sm);
+  font-weight: var(--w-body-black);
+  color: var(--ink-heading);
+  letter-spacing: 0.01em;
+}
+.rev__who i {
+  font-style: normal;
+  font-size: var(--fs-micro);
+  font-weight: var(--w-body-bold);
+  letter-spacing: var(--tr-caps);
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ── Secondary row ──────────────────────────────────────────────────────── */
+.rev__row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-4);
+  margin-block-start: var(--sp-4);
+}
+.rev__rowItem { display: flex; }
+.rev__card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--sp-5);
+  background: var(--s-form);
+  border: var(--rule-hair) solid var(--ink-rule-soft);
+  box-shadow: var(--e-sheet);
+  transition: transform var(--hover-dur) var(--ease-out-cubic), box-shadow var(--hover-dur) var(--ease-out-cubic);
+}
+.rev__card:hover { transform: translate3d(0, -5px, 0); box-shadow: var(--e-lift); }
+.rev__cardTop { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); }
+.rev__cardTop .rev__stars { margin-block-start: 0; }
+.rev__cardText {
+  margin-block-start: var(--sp-4);
+  font-size: var(--fs-sm);
+  line-height: 1.62;
+  color: var(--ink-body);
+}
+.rev__cardFoot {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-block-start: auto;
+  padding-block-start: var(--sp-4);
+}
+
+/* ── Placeholder note ───────────────────────────────────────────────────── */
+.rev__note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  margin-block-start: var(--sp-6);
+  padding-block-start: var(--sp-4);
+  border-block-start: var(--rule-hair) dashed var(--ink-rule);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.03em;
+  color: var(--ink-faint);
+  max-width: 62ch;
+}
+.rev__note .lucide { --icon: 14px; flex: none; margin-block-start: 2px; }
+
+/* ── Breakpoints ────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .rev__top { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .rev__title { max-width: 24ch; }
+  .rev__aggCard { max-width: 380px; }
+  .rev__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px) {
+  .rev__row { grid-template-columns: minmax(0, 1fr); }
+  .rev__quoteText { max-width: none; }
+  .rev__quoteFoot .rev__stars { margin-inline-start: 0; width: 100%; }
+  .rev__scoreNum { font-size: 2.75rem; }
+}

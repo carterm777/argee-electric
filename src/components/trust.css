@@ -1,0 +1,126 @@
+/* ── Trust Badges Banner — Certification Badge Wall /
+   Textured Certificate-Style Panel ───────────────────────────────────────── */
+
+.trust { background-color: var(--s-kraft); }
+
+.trust__panel {
+  position: relative;
+  padding: clamp(1.75rem, 3vw, 2.75rem) clamp(1.25rem, 3vw, 3rem) clamp(1.5rem, 2.6vw, 2.25rem);
+  background: var(--s-form);
+  border: var(--rule-thin) solid var(--c-secondary);
+  box-shadow: var(--e-card);
+}
+/* The inner rule of an engraved certificate border. */
+.trust__panel::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: var(--rule-hair) solid var(--ink-rule);
+  pointer-events: none;
+}
+
+.trust__corner {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border: var(--rule-thin) solid var(--c-primary);
+  pointer-events: none;
+  z-index: 1;
+}
+.trust__corner--tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; }
+.trust__corner--tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; }
+.trust__corner--bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; }
+.trust__corner--br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; }
+
+.trust__intro { display: grid; justify-items: center; }
+.trust__ruleTop {
+  display: block;
+  width: min(120px, 30%);
+  height: var(--rule-thick);
+  background: var(--c-primary);
+  transform-origin: left center;
+}
+
+.trust__title {
+  margin-block-start: var(--sp-4);
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: var(--w-body-black);
+  letter-spacing: var(--tr-engraved);
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  line-height: var(--lh-solid);
+}
+
+.trust__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-block-start: clamp(1.5rem, 2.6vw, 2.25rem);
+}
+.trust__cell {
+  position: relative;
+  padding-inline: clamp(0.5rem, 1.6vw, 1.5rem);
+}
+.trust__cell + .trust__cell::before {
+  content: '';
+  position: absolute;
+  inset-block: 4px;
+  left: 0;
+  width: var(--rule-hair);
+  background: var(--ink-rule-soft);
+}
+
+.trust__badge {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: var(--sp-3);
+}
+/* One seal geometry for all four, so the row reads as a single system. */
+.trust__seal {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: var(--r-pill);
+  color: var(--c-primary);
+  background: var(--s-kraft-pale);
+  border: var(--rule-hair) solid var(--ink-rule);
+  box-shadow: inset 0 0 0 3px var(--s-form);
+  transition: color var(--hover-dur) var(--ease-out-cubic), background-color var(--hover-dur) var(--ease-out-cubic);
+}
+.trust__seal .lucide { --icon: 25px; stroke-width: var(--icon-stroke); }
+.trust__cell:hover .trust__seal { color: var(--c-accent); background: var(--s-carbon); }
+
+.trust__label {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: var(--fs-caption);
+  line-height: 1.3;
+  letter-spacing: 0.005em;
+  color: var(--ink-heading);
+  max-width: 15ch;
+  /* Two lines reserved on every badge so all four sub-notes sit on one line. */
+  min-height: 2.6em;
+}
+.trust__note {
+  font-size: var(--fs-micro);
+  font-weight: var(--w-body-bold);
+  letter-spacing: var(--tr-caps);
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  line-height: var(--lh-solid);
+}
+
+@media (max-width: 780px) {
+  .trust__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--sp-6); }
+  .trust__cell:nth-child(odd)::before { display: none; }
+  .trust__seal { width: 50px; height: 50px; }
+  .trust__seal .lucide { --icon: 22px; }
+}
+
+@media (max-width: 380px) {
+  .trust__grid { grid-template-columns: minmax(0, 1fr); row-gap: var(--sp-5); }
+  .trust__cell::before { display: none; }
+}

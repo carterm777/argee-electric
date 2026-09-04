@@ -1,0 +1,156 @@
+/* ── Our Story — Chronological Timeline / Warm Archival Photo Treatment ──── */
+
+.story {
+  position: relative;
+  background: var(--s-brown-deep);
+  color: var(--ink-on-dark);
+  isolation: isolate;
+}
+.story::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--tex-fibre);
+  opacity: 0.11;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.story > * { position: relative; z-index: 1; }
+
+.story__head .eyebrow { color: var(--c-accent); }
+.story__h2 {
+  color: var(--ink-on-dark);
+  max-width: 20ch;
+}
+
+.story__body {
+  position: relative;
+  margin-block-start: clamp(2.5rem, 4.4vw, 4rem);
+  padding-inline-start: clamp(2rem, 4vw, 3.5rem);
+}
+
+/* The spine, drawn with scroll position. */
+.story__spine {
+  position: absolute;
+  contain: size layout paint;
+  top: 8px;
+  bottom: 8px;
+  left: 5px;
+  width: var(--rule-thin);
+  background: var(--wash-light-14);
+}
+.story__spineFill {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: calc(var(--spine, 0) * 100%);
+  background: linear-gradient(to bottom, var(--c-accent), var(--g-star));
+}
+
+.story__list { display: grid; gap: clamp(2.5rem, 5vw, 4.5rem); }
+
+.story__ch {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(1.5rem, 3.4vw, 3.25rem);
+  align-items: start;
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition:
+    opacity var(--reveal-dur-slow) var(--ease-out-cubic),
+    transform var(--reveal-dur-slow) var(--ease-out-cubic);
+}
+.story__ch[data-in='true'] { opacity: 1; transform: none; }
+
+.story__dot {
+  position: absolute;
+  top: 6px;
+  left: calc(clamp(2rem, 4vw, 3.5rem) * -1);
+  width: 12px;
+  height: 12px;
+  margin-left: 0px;
+  border-radius: var(--r-pill);
+  background: var(--s-brown-deep);
+  border: var(--rule-thin) solid var(--c-accent);
+  box-shadow: 0 0 0 4px var(--s-brown-deep);
+  transform: translate3d(-1px, 0, 0) scale(0.5);
+  opacity: 0;
+  transition: transform 460ms var(--ease-out-quart) 160ms, opacity 320ms linear 160ms;
+}
+.story__ch[data-in='true'] .story__dot { transform: translate3d(-1px, 0, 0) scale(1); opacity: 1; }
+
+.story__marker {
+  font-size: var(--fs-micro);
+  font-weight: var(--w-body-black);
+  letter-spacing: var(--tr-engraved);
+  text-transform: uppercase;
+  color: var(--g-star);
+  line-height: var(--lh-solid);
+}
+.story__chTitle {
+  margin-block-start: var(--sp-3);
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: var(--fs-2xl);
+  line-height: 1.2;
+  letter-spacing: var(--tr-tight);
+  color: var(--ink-on-dark);
+}
+.story__text {
+  margin-block-start: var(--sp-4);
+  font-size: var(--fs-md);
+  line-height: var(--lh-loose);
+  color: var(--ink-on-dark-muted);
+  max-width: 52ch;
+}
+
+/* ── Photographs ────────────────────────────────────────────────────────── */
+.story__chPhoto { position: relative; }
+.story__photoBack {
+  position: absolute;
+  inset: 0;
+  contain: size layout paint;
+  background: var(--s-carbon);
+  border: var(--rule-hair) solid var(--ink-rule);
+  transform: rotate(-2.6deg) translate3d(-9px, 9px, 0);
+  box-shadow: var(--e-sheet);
+}
+.story__frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border: 10px solid var(--s-form);
+  box-shadow: var(--e-lift);
+  --frame-ink: var(--wash-paper-62);
+  transition: transform var(--hover-dur) var(--ease-out-cubic);
+}
+.story__frame .fdraw__img { aspect-ratio: 4 / 3; object-position: center 38%; }
+
+/* Warm archival treatment, strongest on the founding photo. */
+.story__ch[data-archival='true'] .story__frame { transform: rotate(2.2deg); }
+.story__ch[data-archival='true'] .story__frame .fdraw__img {
+  filter: sepia(0.42) saturate(0.86) contrast(0.95) brightness(1.03);
+}
+.story__ch[data-archival='true']:hover .story__frame { transform: rotate(0.8deg) translate3d(0, -4px, 0); }
+.story__ch[data-archival='false'] .story__frame .fdraw__img {
+  filter: sepia(0.14) saturate(0.94);
+}
+.story__ch[data-archival='false']:hover .story__frame { transform: translate3d(0, -4px, 0); }
+
+/* Alternate the photo side so the timeline reads as a walk down the page. */
+.story__ch:nth-child(even) .story__chBody { order: 2; }
+.story__ch:nth-child(even) .story__chPhoto { order: 1; }
+
+@media (max-width: 860px) {
+  .story__ch { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
+  .story__ch:nth-child(even) .story__chBody { order: 1; }
+  .story__ch:nth-child(even) .story__chPhoto { order: 2; }
+  .story__chPhoto { max-width: 440px; }
+  .story__text { max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story__ch { opacity: 1; transform: none; }
+  .story__dot { opacity: 1; transform: translate3d(-1px, 0, 0) scale(1); }
+}

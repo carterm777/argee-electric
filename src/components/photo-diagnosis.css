@@ -1,0 +1,384 @@
+/* ── Photo diagnosis — the signature element ────────────────────────────────
+   Warm Illustrated Widget Frame: a carbon-copy job ticket. White top sheet on
+   a yellow carbon copy, printed-form rhythm, ruled fields, rubber stamp.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.tik {
+  position: relative;
+  isolation: isolate;
+}
+
+/* The carbon copy behind the top sheet. */
+.tik__carbon {
+  position: absolute;
+  inset: 0;
+  contain: size layout paint;
+  z-index: 0;
+  background: var(--s-carbon);
+  border: var(--rule-hair) solid var(--ink-rule);
+  box-shadow: var(--e-sheet);
+  transform: translate3d(16px, 18px, 0) rotate(1.5deg);
+  transform-origin: 30% 0;
+  transition: transform var(--hover-dur) var(--ease-out-cubic);
+}
+/* Site-specific technique #4 — Carbon-Copy Lift. */
+.tik:hover .tik__carbon { transform: translate3d(21px, 24px, 0) rotate(2deg); }
+
+.tik__sheet {
+  position: relative;
+  z-index: 1;
+  background: var(--s-form-pure);
+  border: var(--rule-hair) solid var(--ink-rule);
+  box-shadow: var(--e-ticket);
+  padding: var(--sp-6) var(--sp-6) var(--sp-5);
+  transition: transform var(--hover-dur) var(--ease-out-cubic);
+}
+.tik:hover .tik__sheet { transform: translate3d(0, -3px, 0); }
+
+/* The colour band across the top of the form. */
+.tik__sheet::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 5px;
+  background: var(--c-primary);
+}
+
+/* Perforation: the tear strip a work order gets detached along. */
+.tik__perf {
+  position: absolute;
+  inset-inline: 0;
+  top: 5px;
+  height: 8px;
+  background-image: radial-gradient(circle at 4px 0, var(--s-kraft) 3px, transparent 3.5px);
+  background-size: 12px 8px;
+  background-repeat: repeat-x;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ── Head ───────────────────────────────────────────────────────────────── */
+.tik__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding-block-end: var(--sp-3);
+  border-block-end: var(--rule-thin) solid var(--ink-heading);
+}
+.tik__form {
+  display: block;
+  font-size: var(--fs-micro);
+  font-weight: var(--w-body-black);
+  letter-spacing: var(--tr-engraved);
+  text-transform: uppercase;
+  color: var(--c-primary);
+  line-height: var(--lh-solid);
+}
+.tik__title {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: var(--fs-2xl);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tr-tight);
+  color: var(--ink-heading);
+  margin-block-start: 6px;
+}
+.tik__no {
+  font-size: var(--fs-micro);
+  font-weight: var(--w-body-bold);
+  letter-spacing: var(--tr-caps);
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.tik__no b { color: var(--ink-heading); margin-inline-start: 5px; letter-spacing: 0.05em; }
+
+.tik__lede {
+  font-size: var(--fs-caption);
+  line-height: 1.55;
+  color: var(--ink-muted);
+  padding-block: var(--sp-3);
+  border-block-end: var(--rule-hair) dashed var(--ink-rule);
+  margin-block-end: var(--sp-4);
+}
+
+/* ── Fields ─────────────────────────────────────────────────────────────── */
+.tik__form-el { display: grid; gap: var(--sp-4); }
+
+.tik__field {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  column-gap: var(--sp-3);
+  row-gap: 6px;
+  align-items: start;
+}
+.tik__fieldNo {
+  grid-row: 1 / span 3;
+  font-size: var(--fs-micro);
+  font-weight: var(--w-body-black);
+  color: var(--ink-rule);
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  padding-block-start: 2px;
+}
+/* Column 2 only for labels that are direct children of the field grid —
+   inside .tik__col the label belongs in that nested grid s single column. */
+.tik__field > .tik__label {
+  grid-column: 2;
+}
+.tik__label {
+  font-size: var(--fs-micro);
+  font-weight: var(--w-body-black);
+  letter-spacing: var(--tr-engraved);
+  text-transform: uppercase;
+  color: var(--ink-heading);
+  line-height: var(--lh-solid);
+}
+.tik__field > .tik__drop,
+.tik__field > .tik__ruled,
+.tik__field > .tik__err { grid-column: 2; }
+
+.tik__field--split { grid-template-columns: 24px minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--sp-3); }
+.tik__field--split .tik__col { display: grid; gap: 6px; align-content: start; }
+.tik__field--split .tik__col:first-of-type { grid-column: 2; }
+
+/* Dropzone */
+.tik__drop {
+  position: relative;
+  background: var(--s-kraft-pale);
+  border: var(--rule-hair) dashed var(--ink-rule);
+  transition: border-color var(--dur-fast) linear, background-color var(--dur-fast) linear;
+}
+.tik__drop[data-drag='true'] { border-color: var(--c-primary); background: var(--s-carbon); }
+.tik__dropBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  width: 100%;
+  padding: var(--sp-4);
+  text-align: left;
+  transition: background-color var(--dur-fast) linear;
+}
+.tik__dropBtn:hover { background: var(--wash-paper-55); }
+.tik__dropIcon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  background: var(--c-primary);
+  color: var(--s-form-pure);
+  border-radius: var(--r-xs);
+  transition: transform var(--hover-dur) var(--ease-out-cubic), background-color var(--hover-dur) linear;
+}
+.tik__dropIcon .lucide { --icon: 21px; }
+.tik__dropBtn:hover .tik__dropIcon { background: var(--c-accent); transform: rotate(-4deg); }
+.tik__dropText { display: grid; gap: 3px; min-width: 0; }
+.tik__dropText b {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: var(--fs-base);
+  color: var(--ink-heading);
+  letter-spacing: var(--tr-tight);
+  line-height: var(--lh-heading);
+}
+.tik__dropText i {
+  font-style: normal;
+  font-size: var(--fs-caption);
+  color: var(--ink-faint);
+  line-height: 1.4;
+}
+.tik__dropPlus { margin-inline-start: auto; color: var(--ink-rule); flex: none; }
+
+.tik__drop[data-has='true'] { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3); border-style: solid; background: var(--s-form); }
+.tik__thumb {
+  width: 62px;
+  height: 62px;
+  flex: none;
+  object-fit: cover;
+  border: var(--rule-hair) solid var(--ink-rule);
+}
+.tik__dropMeta { display: grid; gap: 4px; min-width: 0; }
+.tik__fileName {
+  font-size: var(--fs-caption);
+  font-weight: var(--w-body-bold);
+  color: var(--ink-heading);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tik__clear {
+  margin-inline-start: auto;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border: var(--rule-hair) solid var(--ink-rule-soft);
+  color: var(--ink-muted);
+  border-radius: var(--r-xs);
+  transition: color var(--dur-fast) linear, border-color var(--dur-fast) linear, background-color var(--dur-fast) linear;
+}
+.tik__clear:hover { color: var(--state-err); border-color: var(--state-err); background: var(--wash-err-06); }
+.tik__clear .lucide { --icon: 16px; }
+
+/* Ruled textarea — the lines of a printed form */
+.tik__ruled {
+  width: 100%;
+  padding: 3px 2px;
+  font-size: var(--fs-sm);
+  line-height: 26px;
+  color: var(--ink-body);
+  background-color: transparent;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 25px,
+    var(--ink-rule-soft) 25px,
+    var(--ink-rule-soft) 26px
+  );
+  background-position: 0 3px;
+  border: 0;
+  border-radius: 0;
+  outline-offset: 4px;
+}
+.tik__ruled::placeholder,
+.tik__line::placeholder { color: var(--ink-rule); }
+
+/* Ruled single line */
+.tik__line {
+  width: 100%;
+  padding: 5px 2px;
+  font-size: var(--fs-sm);
+  color: var(--ink-body);
+  background: transparent;
+  border: 0;
+  border-block-end: var(--rule-hair) solid var(--ink-rule);
+  border-radius: 0;
+  transition: border-color var(--dur-fast) linear;
+}
+.tik__line:focus,
+.tik__ruled:focus { border-color: var(--c-primary); }
+.tik__line[aria-invalid='true'] { border-color: var(--state-err); }
+
+.tik__err {
+  font-size: var(--fs-micro);
+  font-weight: var(--w-body-bold);
+  color: var(--state-err);
+  line-height: 1.4;
+}
+
+.tik__submit { margin-block-start: var(--sp-1); }
+.tik__submit:disabled { opacity: 0.72; cursor: progress; transform: none; }
+.tik__reassure { margin-block-start: -2px; }
+
+/* ── Success — site-specific technique #2, Stamp Impression ─────────────── */
+.tik__done { position: relative; padding-block: var(--sp-5) var(--sp-2); }
+
+@keyframes tik-stamp {
+  0%   { opacity: 0; transform: rotate(-9deg) scale(1.38); filter: blur(3px); }
+  100% { opacity: 1; transform: rotate(-9deg) scale(1); filter: blur(0); }
+}
+.tik__stamp {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  z-index: 2;
+  pointer-events: none;
+  animation: tik-stamp 460ms var(--ease-out-quart) 120ms both;
+}
+.tik__stampInner {
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  padding: 9px var(--sp-4) 7px;
+  color: var(--ink-stamp);
+  border: var(--rule-thick) solid currentColor;
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 1px currentColor;
+  opacity: 0.86;
+  transform: rotate(0deg);
+}
+.tik__stampInner b {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: 1.125rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: var(--lh-solid);
+}
+.tik__stampInner i {
+  font-style: normal;
+  font-size: 0.5rem;
+  font-weight: var(--w-body-black);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.tik__doneBody { max-width: 44ch; }
+.tik__doneIcon { --icon: 26px; color: var(--state-ok); margin-block-end: var(--sp-3); }
+.tik__doneTitle {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: var(--fs-xl);
+  color: var(--ink-heading);
+  letter-spacing: var(--tr-tight);
+  line-height: var(--lh-heading);
+  margin-block-end: var(--sp-3);
+}
+.tik__doneBody p { font-size: var(--fs-sm); color: var(--ink-muted); line-height: 1.6; }
+.tik__doneBody .tik__doneNote {
+  margin-block-start: var(--sp-3);
+  padding-block-start: var(--sp-3);
+  border-block-start: var(--rule-hair) dashed var(--ink-rule);
+  font-size: var(--fs-micro);
+  color: var(--ink-faint);
+}
+.tik__doneActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin-block-start: var(--sp-5);
+}
+.tik__reset {
+  font-size: var(--fs-caption);
+  font-weight: var(--w-body-bold);
+  color: var(--ink-muted);
+}
+.tik__reset:hover { color: var(--c-primary); }
+
+/* ── Compact form for the mobile fold ──────────────────────────────────── */
+@media (max-width: 900px) {
+  .tik__sheet { padding: var(--sp-4) var(--sp-4) var(--sp-3); }
+  .tik__carbon { transform: translate3d(9px, 10px, 0) rotate(1deg); }
+  .tik__lede { display: none; }
+  .tik__head { padding-block-end: 6px; }
+  .tik__title { font-size: 1.1875rem; margin-block-start: 3px; }
+  .tik__form-el { gap: 0.625rem; margin-block-start: var(--sp-3); }
+  .tik__dropBtn { padding: 0.625rem; gap: 0.625rem; }
+  .tik__dropIcon { width: 34px; height: 34px; }
+  .tik__dropIcon .lucide { --icon: 18px; }
+  .tik__dropText i { display: none; }
+  .tik__field { row-gap: 4px; }
+  .tik__submit { padding-block: 0.8125rem; }
+  .tik__line { font-size: var(--fs-caption); }
+  .tik__reassure { font-size: var(--fs-micro); line-height: 1.45; }
+  .tik__ruled { line-height: 24px; background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 23px, var(--ink-rule-soft) 23px, var(--ink-rule-soft) 24px); }
+  .tik__field--split { grid-template-columns: 24px minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--sp-3); }
+  .tik__stamp { top: -8px; right: -2px; }
+  .tik__stampInner { padding: 7px var(--sp-3) 5px; }
+  .tik__stampInner b { font-size: 0.9375rem; }
+}
+
+@media (max-width: 380px) {
+  .tik__field--split { grid-template-columns: 24px minmax(0, 1fr); row-gap: var(--sp-3); }
+  .tik__field--split .tik__col { grid-column: 2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tik__stamp { animation: none; opacity: 1; transform: rotate(-9deg); }
+}

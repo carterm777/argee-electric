@@ -1,0 +1,206 @@
+/* ── Argee Electric — design tokens ───────────────────────────────────────────────
+   Thesis: printed matter from a family electrical shop. Kraft/manila ground,
+   white form stock floating on it, maroon as structural ink, brown as body ink,
+   clay reserved almost entirely for stamp red. Letterpress weight, grain,
+   ruled fields, hairline rules. Nothing glassy, nothing blurred.
+
+   The five brand values below are fixed by the brief. Everything else here is
+   either a tint/shade of one of them or a scale decision.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Brand — from PROMPT.txt, fixed ─────────────────────────────────── */
+  --c-primary: #8d2424;   /* maroon  */
+  --c-secondary: #513c2d; /* brown   */
+  --c-accent: #b54a3a;    /* clay    */
+  --c-dark: #333333;      /* ink     */
+  --c-light: #ffffff;     /* paper   */
+
+  /* ── Surfaces — tints and shades of the fixed five ──────────────────── */
+  --s-kraft: #e3d6c0;        /* the page ground: manila envelope           */
+  --s-kraft-deep: #d5c4a8;   /* alternating band, ruled edges              */
+  --s-kraft-pale: #ece3d3;   /* lighter kraft for inset panels             */
+  --s-form: #fbf8f3;         /* white-ish form stock                       */
+  --s-form-pure: #ffffff;    /* the top sheet                              */
+  --s-carbon: #e8dcbd;       /* the yellow carbon copy behind a top sheet   */
+  --s-maroon-deep: #5f1717;  /* shade of primary — CTA band                */
+  --s-brown-deep: #33251b;   /* shade of secondary — footer                */
+  --s-brown-deeper: #241a13;
+
+  /* ── Ink roles ──────────────────────────────────────────────────────── */
+  --ink-strong: var(--c-dark);
+  --ink-body: #4a3729;
+  --ink-heading: #2f2119;
+  --ink-muted: #6d5b4b;
+  --ink-faint: #8d7c6b;
+  --ink-rule: #bda98b;
+  --ink-rule-soft: #cdbb9f;
+  --ink-on-dark: #f4ece0;
+  --ink-on-dark-muted: #c6b6a2;
+  --ink-on-dark-faint: #9d8b78;
+  --ink-stamp: var(--c-accent);
+
+  /* ── Google review block — third-party marks, declared once here ────── */
+  --g-blue: #4285f4;
+  --g-red: #ea4335;
+  --g-yellow: #fbbc05;
+  --g-green: #34a853;
+  --g-star: #e8a33d;
+
+  /* ── Focus / states ─────────────────────────────────────────────────── */
+  --focus-ring: var(--c-primary);
+  --focus-ring-dark: #e8c9a8;
+  --state-ok: #4d6b3c;
+  --state-err: #a63423;
+
+  /* ── Type roles ─────────────────────────────────────────────────────── */
+  --font-display: 'Coustard', 'Bookman Old Style', 'Georgia', 'Times New Roman', serif;
+  --font-body: 'Lato', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --w-display: 900;
+  --w-display-reg: 400;
+  --w-body: 400;
+  --w-body-bold: 700;
+  --w-body-black: 900;
+
+  /* ── Type scale — 1.22 minor-third-ish, tuned per step ──────────────── */
+  --fs-micro: 0.6875rem;   /* 11px — form numbers, stamps, legal          */
+  --fs-label: 0.75rem;     /* 12px — engraved caps labels                 */
+  --fs-caption: 0.8125rem; /* 13px — captions, microcopy                  */
+  --fs-sm: 0.875rem;       /* 14px — dense UI, nav, footer links          */
+  --fs-base: 1rem;         /* 16px — body                                 */
+  --fs-md: 1.0625rem;      /* 17px — long-form body                       */
+  --fs-lg: 1.1875rem;      /* 19px — lead paragraphs                      */
+  --fs-xl: clamp(1.25rem, 1.05rem + 0.55vw, 1.4375rem);   /* h3           */
+  --fs-2xl: clamp(1.5rem, 1.2rem + 0.9vw, 1.875rem);      /* big h3, quote */
+  --fs-3xl: clamp(1.75rem, 1.32rem + 1.5vw, 2.625rem);    /* h2           */
+  --fs-4xl: clamp(1.9375rem, 1.35rem + 2.1vw, 3rem);      /* pull-quote   */
+  --fs-hero: clamp(1.75rem, 1.05rem + 2.6vw, 2.9375rem);  /* h1           */
+  --fs-numeral: clamp(3.25rem, 2.1rem + 4.4vw, 6rem);     /* 01–04        */
+  --fs-quotemark: clamp(7rem, 4rem + 12vw, 15rem);
+
+  /* ── Tracking / leading ─────────────────────────────────────────────── */
+  --tr-engraved: 0.22em;   /* the letterpress caps register               */
+  --tr-caps: 0.12em;
+  --tr-tight: -0.015em;
+  --tr-tighter: -0.025em;
+  --lh-solid: 1;
+  --lh-display: 1.12;
+  --lh-heading: 1.2;
+  --lh-body: 1.62;
+  --lh-loose: 1.72;
+
+  /* ── Space scale ────────────────────────────────────────────────────── */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 2.5rem;
+  --sp-8: 3rem;
+  --sp-9: 4rem;
+  --sp-10: 5rem;
+  --sp-11: 6.5rem;
+  --sp-12: 8rem;
+
+  /* ── Section rhythm (consumed by base.css) ──────────────────────────── */
+  --section-y: clamp(3.5rem, 2.4rem + 4vw, 6.5rem);
+  --gutter: 1.25rem;
+  --shell: 1200px;
+  --shell-narrow: 780px;
+  --shell-wide: 1360px;
+
+  /* ── Radii — paper is barely rounded; only the FAQ softens ──────────── */
+  --r-none: 0;
+  --r-xs: 2px;
+  --r-sm: 3px;
+  --r-md: 6px;
+  --r-lg: 12px;
+  --r-pill: 999px;
+
+  /* ── Rules ──────────────────────────────────────────────────────────── */
+  --rule-hair: 1px;
+  --rule-thin: 2px;
+  --rule-thick: 3px;
+
+  /* ── Elevation — paper on a desk, never a glow ──────────────────────── */
+  --e-sheet: 0 1px 2px rgb(51 37 27 / 0.10), 0 4px 10px -6px rgb(51 37 27 / 0.20);
+  --e-card: 0 2px 3px rgb(51 37 27 / 0.10), 0 10px 24px -14px rgb(51 37 27 / 0.34);
+  --e-lift: 0 3px 5px rgb(51 37 27 / 0.12), 0 20px 38px -18px rgb(51 37 27 / 0.42);
+  --e-ticket: 0 2px 0 rgb(51 37 27 / 0.06), 0 14px 34px -16px rgb(51 37 27 / 0.46);
+  --e-inset: inset 0 1px 0 rgb(255 255 255 / 0.7), inset 0 -1px 0 rgb(51 37 27 / 0.07);
+  --e-punch: inset 0 1px 2px rgb(51 37 27 / 0.35);
+
+  /* ── Washes — translucent composites laid over the surfaces above.
+        Declared once here so no component ever writes a raw colour. ────── */
+  --wash-paper-80: rgb(255 255 255 / 0.8);
+  --wash-paper-72: rgb(255 255 255 / 0.72);
+  --wash-paper-62: rgb(255 255 255 / 0.62);
+  --wash-paper-55: rgb(255 255 255 / 0.55);
+  --wash-paper-50: rgb(255 255 255 / 0.5);
+  --wash-light-42: rgb(244 236 224 / 0.42);
+  --wash-light-32: rgb(244 236 224 / 0.32);
+  --wash-light-22: rgb(244 236 224 / 0.22);
+  --wash-light-18: rgb(244 236 224 / 0.18);
+  --wash-light-16: rgb(244 236 224 / 0.16);
+  --wash-light-14: rgb(244 236 224 / 0.14);
+  --wash-light-09: rgb(244 236 224 / 0.09);
+  --wash-maroon-28: rgb(141 36 36 / 0.28);
+  --wash-maroon-09: rgb(141 36 36 / 0.09);
+  --wash-err-06: rgb(166 52 35 / 0.06);
+  --wash-rule-60: rgb(189 169 139 / 0.6);
+  --wash-faint-85: rgb(157 139 120 / 0.85);
+  --frame-ink-strong: rgb(255 255 255 / 0.8);
+  --frame-ink-soft: rgb(255 255 255 / 0.62);
+  --shadow-callbar: 0 -10px 26px -14px rgb(51 37 27 / 0.6);
+
+  /* ── Scrims — one declaration each, consumed by the hero and the CTA ─── */
+  --scrim-hero: linear-gradient(
+    97deg,
+    var(--s-kraft) 0%,
+    var(--s-kraft) 13%,
+    rgb(227 214 192 / 0.9) 27%,
+    rgb(213 196 168 / 0.56) 46%,
+    rgb(81 60 45 / 0.3) 78%,
+    rgb(51 37 27 / 0.42) 100%
+  );
+  --scrim-hero-mobile: linear-gradient(
+    180deg,
+    rgb(227 214 192 / 0.45) 0%,
+    rgb(227 214 192 / 0.7) 100%
+  );
+  --scrim-cta: linear-gradient(
+    112deg,
+    var(--s-maroon-deep) 8%,
+    rgb(95 23 23 / 0.9) 46%,
+    rgb(51 37 27 / 0.86) 100%
+  );
+
+  /* ── Icons ──────────────────────────────────────────────────────────── */
+  --icon: 22px;
+  --icon-stroke: 1.6;
+  --icon-lg: 28px;
+
+  /* ── Motion — this brand is unhurried, slightly heavy ───────────────── */
+  --reveal-rise: 24px;
+  --reveal-dur: 700ms;
+  --reveal-dur-slow: 880ms;
+  --hover-dur: 260ms;
+  --dur-fast: 180ms;
+  --dur-mid: 320ms;
+
+  /* ── Header height, consumed by base.css scroll-padding ─────────────── */
+  --header-h: 116px;
+
+  /* ── Grain: feTurbulence, no colour, so it tints whatever sits under it */
+  --tex-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E");
+  --tex-grain-bed: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='0.14'/%3E%3C/svg%3E");
+  --tex-fibre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.014 0.6' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23f)' opacity='0.55'/%3E%3C/svg%3E");
+  --grain-a: 0.055;      /* grain opacity on kraft   */
+  --grain-a-paper: 0.03; /* grain opacity on form stock */
+  --grain-a-dark: 0.09;  /* grain opacity on dark bands */
+}
+
+@media (min-width: 700px) {
+  :root { --gutter: 2rem; }
+}

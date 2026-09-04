@@ -1,0 +1,357 @@
+/* ── Page-level composition ─────────────────────────────────────────────────
+   Only the primitives reused across sections live here: the kraft ground and
+   its grain, the letterpress label register, the button set, the paper-card
+   shell, the section headers, and the frame-draw wrapper. Every section's own
+   rules are namespaced under its own root class in its own file.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* base.css sets scroll-behavior: smooth at zero specificity. A smooth-scrolled
+   anchor jump animates the viewport past whole sections in a handful of frames,
+   which makes scroll-triggered entrances fire (or not) unpredictably and leaves
+   any scripted scroll on a half-revealed page. Anchor navigation here is
+   instant instead — scroll-padding-top still clears the sticky header. */
+html { scroll-behavior: auto; }
+
+body {
+  background-color: var(--s-kraft);
+  background-image: var(--tex-grain-bed);
+  background-blend-mode: multiply;
+  color: var(--ink-body);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  font-weight: var(--w-body);
+  line-height: var(--lh-body);
+}
+
+/* Print-shop grain, blended into each ground rather than laid over the page as
+   one fixed full-height layer: a blended overlay the height of a page this long
+   breaks compositing in Chromium — panels render half-transparent and a
+   full-page raster comes back blank. .grainbed does the same job per surface. */
+.grainbed {
+  background-image: var(--tex-grain-bed);
+  background-blend-mode: multiply;
+  background-size: 180px 180px;
+}
+
+#root { position: relative; }
+
+::selection { background: var(--c-primary); color: var(--s-form-pure); }
+
+
+/* Release the layer promotion once an entrance has finished. motion.css sets
+   will-change on every reveal technique; on a page this long that keeps a
+   composited layer alive for every revealed element, which is what makes tall
+   rasters drop individual elements. */
+[data-in='true'][data-reveal],
+[data-in='true'] [data-reveal] { will-change: auto; }
+
+/* ── The grain utility, for any surface that needs its own texture ─────── */
+.grain { position: relative; isolation: isolate; }
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--tex-grain);
+  opacity: var(--grain-a-paper);
+  mix-blend-mode: multiply;
+  z-index: 2;
+}
+.grain--dark::after { opacity: var(--grain-a-dark); mix-blend-mode: overlay; }
+.grain--fibre::after { background-image: var(--tex-fibre); opacity: 0.07; }
+
+/* WordReveal wraps each word in an overflow-hidden inline-block, which eats the
+   trailing space between words. Restore the word gap on the box itself. */
+[data-word-reveal] .wr-word:not(:last-child) { margin-inline-end: 0.06em; }
+
+/* ── Section head wrapper (see SectionHead.jsx) ────────────────────────── */
+.shead { max-width: 62ch; }
+
+/* ── The letterpress register: engraved caps ───────────────────────────── */
+.eyebrow {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  align-items: center;
+  gap: var(--sp-3);
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: var(--w-body-black);
+  letter-spacing: var(--tr-engraved);
+  text-transform: uppercase;
+  color: var(--c-primary);
+  line-height: var(--lh-solid);
+}
+.eyebrow::before {
+  content: '';
+  width: 26px;
+  height: var(--rule-thin);
+  background: currentColor;
+  flex: none;
+}
+.eyebrow--plain::before { display: none; }
+.eyebrow--muted { color: var(--ink-faint); }
+.eyebrow--light { color: var(--ink-on-dark-muted); }
+
+.stencil {
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: var(--w-body-bold);
+  letter-spacing: var(--tr-engraved);
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  line-height: var(--lh-solid);
+}
+
+/* ── Section headers ───────────────────────────────────────────────────── */
+.s-head { max-width: 62ch; }
+.s-head__title {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: var(--fs-3xl);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tr-tight);
+  color: var(--ink-heading);
+  margin-block-start: var(--sp-4);
+  text-wrap: balance;
+}
+.s-head__title em {
+  font-style: normal;
+  color: var(--c-primary);
+}
+.s-head__lede {
+  font-size: var(--fs-lg);
+  line-height: var(--lh-loose);
+  color: var(--ink-muted);
+  margin-block-start: var(--sp-4);
+  max-width: 58ch;
+}
+.s-head--light .s-head__title { color: var(--ink-on-dark); }
+.s-head--light .s-head__lede { color: var(--ink-on-dark-muted); }
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: 0.9375rem var(--sp-6);
+  border-radius: var(--r-xs);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: var(--w-body-black);
+  letter-spacing: var(--tr-caps);
+  text-transform: uppercase;
+  line-height: var(--lh-solid);
+  border: var(--rule-thin) solid transparent;
+  transition:
+    background-color var(--hover-dur) var(--ease-out-cubic),
+    color var(--hover-dur) var(--ease-out-cubic),
+    border-color var(--hover-dur) var(--ease-out-cubic),
+    box-shadow var(--hover-dur) var(--ease-out-cubic),
+    transform var(--hover-dur) var(--ease-out-cubic);
+  will-change: transform;
+}
+.btn .lucide { --icon: 18px; }
+
+.btn--primary {
+  background: var(--c-primary);
+  border-color: var(--c-primary);
+  color: var(--s-form-pure);
+  box-shadow: var(--e-sheet);
+}
+.btn--primary:hover {
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+  box-shadow: var(--e-card);
+  transform: translate3d(0, -3px, 0);
+}
+.btn--primary:active { transform: translate3d(0, -1px, 0); }
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--ink-rule);
+  color: var(--ink-heading);
+}
+.btn--ghost:hover {
+  border-color: var(--c-primary);
+  color: var(--c-primary);
+  background: var(--wash-paper-50);
+  transform: translate3d(0, -3px, 0);
+}
+
+.btn--onDark {
+  background: var(--s-form-pure);
+  border-color: var(--s-form-pure);
+  color: var(--c-primary);
+}
+.btn--onDark:hover {
+  background: var(--ink-on-dark);
+  border-color: var(--ink-on-dark);
+  transform: translate3d(0, -3px, 0);
+}
+
+.btn--outlineLight {
+  background: transparent;
+  border-color: var(--wash-light-42);
+  color: var(--ink-on-dark);
+}
+.btn--outlineLight:hover {
+  border-color: var(--ink-on-dark);
+  background: var(--wash-light-09);
+  transform: translate3d(0, -3px, 0);
+}
+
+.btn--sm { padding: 0.6875rem var(--sp-5); font-size: var(--fs-micro); }
+.btn--wide { width: 100%; }
+
+/* Text link with the Underline Sweep micro-interaction. */
+.tlink {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+  transition: color var(--dur-fast) var(--ease-out-cubic);
+}
+.tlink::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: var(--rule-hair);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 240ms var(--ease-out-quart);
+}
+.tlink:hover::after,
+.tlink:focus-visible::after { transform: scaleX(1); }
+
+/* ── Paper card: the page's structural object ──────────────────────────── */
+.paper {
+  position: relative;
+  background: var(--s-form);
+  border: var(--rule-hair) solid var(--ink-rule-soft);
+  box-shadow: var(--e-card);
+}
+.paper--pure { background: var(--s-form-pure); }
+.paper--kraft { background: var(--s-kraft-pale); }
+
+/* ── Divider rules ─────────────────────────────────────────────────────── */
+.rule {
+  height: var(--rule-hair);
+  background: var(--ink-rule);
+  border: 0;
+  opacity: 0.7;
+}
+
+/* ── Site-specific technique #1: Frame Draw ────────────────────────────────
+   A four-sided hairline frame that draws top -> right -> bottom -> left
+   around a photograph, after the photo's own entrance completes.
+   From references/animation-and-motion-richness.md "Bordered Frame Draw".
+   ───────────────────────────────────────────────────────────────────────── */
+.fdraw { position: relative; overflow: hidden; }
+.fdraw__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fdraw__frame {
+  position: absolute;
+  inset: var(--frame-inset, 12px);
+  pointer-events: none;
+  z-index: 3;
+}
+.fdraw__frame i {
+  position: absolute;
+  display: block;
+  background: var(--frame-ink, var(--wash-paper-80));
+  transition: transform 380ms var(--ease-out-quart);
+}
+.fdraw__frame i:nth-child(1) {
+  top: 0; left: 0; right: 0; height: var(--rule-hair);
+  transform: scaleX(0); transform-origin: left center;
+  transition-delay: var(--frame-delay, 620ms);
+}
+.fdraw__frame i:nth-child(2) {
+  top: 0; right: 0; bottom: 0; width: var(--rule-hair);
+  transform: scaleY(0); transform-origin: top center;
+  transition-delay: calc(var(--frame-delay, 620ms) + 130ms);
+}
+.fdraw__frame i:nth-child(3) {
+  bottom: 0; left: 0; right: 0; height: var(--rule-hair);
+  transform: scaleX(0); transform-origin: right center;
+  transition-delay: calc(var(--frame-delay, 620ms) + 260ms);
+}
+.fdraw__frame i:nth-child(4) {
+  top: 0; left: 0; bottom: 0; width: var(--rule-hair);
+  transform: scaleY(0); transform-origin: bottom center;
+  transition-delay: calc(var(--frame-delay, 620ms) + 390ms);
+}
+.fdraw[data-in='true'] .fdraw__frame i:nth-child(1),
+.fdraw[data-in='true'] .fdraw__frame i:nth-child(3) { transform: scaleX(1); }
+.fdraw[data-in='true'] .fdraw__frame i:nth-child(2),
+.fdraw[data-in='true'] .fdraw__frame i:nth-child(4) { transform: scaleY(1); }
+
+/* ── Reassurance microcopy ─────────────────────────────────────────────── */
+.reassure {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--ink-faint);
+}
+.reassure .lucide { --icon: 15px; margin-block-start: 2px; color: var(--ink-rule); flex: none; }
+.reassure--light { color: var(--ink-on-dark-faint); }
+.reassure--light .lucide { color: var(--ink-on-dark-faint); }
+
+/* ── Skip link ─────────────────────────────────────────────────────────── */
+.skip-link {
+  background: var(--c-primary);
+  color: var(--s-form-pure);
+  font-size: var(--fs-label);
+  font-weight: var(--w-body-black);
+  letter-spacing: var(--tr-caps);
+  text-transform: uppercase;
+  border-radius: var(--r-xs);
+}
+
+/* ── Sticky mobile call bar — call only, per the brief ─────────────────── */
+.callbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  display: none;
+  padding: var(--sp-3) var(--sp-4);
+  padding-block-end: calc(var(--sp-3) + env(safe-area-inset-bottom, 0px));
+  background: var(--c-primary);
+  border-block-start: var(--rule-thin) solid var(--s-maroon-deep);
+  box-shadow: var(--shadow-callbar);
+  transform: translate3d(0, 110%, 0);
+  transition: transform 420ms var(--ease-out-quart);
+}
+.callbar[data-shown='true'] { transform: none; }
+.callbar__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  color: var(--s-form-pure);
+  font-size: var(--fs-sm);
+  font-weight: var(--w-body-black);
+  letter-spacing: var(--tr-caps);
+  text-transform: uppercase;
+  line-height: var(--lh-solid);
+  padding-block: var(--sp-2);
+}
+.callbar__link .lucide { --icon: 18px; }
+.callbar :focus-visible { outline-color: var(--focus-ring-dark); }
+
+@media (max-width: 900px) {
+  .callbar { display: block; }
+  body { padding-block-end: 66px; }
+}
